@@ -25,18 +25,10 @@ if (Test-Path $AgentsSourceDir) {
     $Agents = Get-ChildItem -Path $AgentsSourceDir -File -Filter "*.md"
     foreach ($Agent in $Agents) {
         $TargetFile = Join-Path $AgentsTargetDir $Agent.Name
-        if (-not (Test-Path $TargetFile)) {
-            # For files, we use hard links or just copy, but junctions only work for directories.
-            # However, Gemini CLI agents are typically files. We will use a Symbolic Link for files (requires admin)
-            # or just copy them. Since this is a portable workspace, let's use New-Item -ItemType HardLink.
-            try {
-                New-Item -ItemType HardLink -Path $TargetFile -Value $Agent.FullName -ErrorAction Stop | Out-Null
-                Write-Host "Linked agent: $($Agent.Name) -> $TargetFile" -ForegroundColor Green
-            } catch {
-                Copy-Item -Path $Agent.FullName -Destination $TargetFile -Force
-                Write-Host "Copied agent (link failed): $($Agent.Name) -> $TargetFile" -ForegroundColor Cyan
-            }
-        }
+        # We always copy to ensure updates are reflected. 
+        # Using Copy-Item -Force ensures it replaces existing agents.
+        Copy-Item -Path $Agent.FullName -Destination $TargetFile -Force
+        Write-Host "Updated agent: $($Agent.Name) -> $TargetFile" -ForegroundColor Green
     }
 }
 
