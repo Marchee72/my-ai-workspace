@@ -1,0 +1,6 @@
+{
+  "name": "workspace-manager",
+  "description": "Agent capable of fetching updates, managing git repos, and orchestrating the workspace.",
+  "version": "1.0.0",
+  "entrypoint": "agent.js"
+}

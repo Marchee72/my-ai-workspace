@@ -1,0 +1,6 @@
+{
+  "name": "linux-automator",
+  "description": "Agent for managing local Linux servers (systemd, bash scripts, log monitoring).",
+  "version": "1.0.0",
+  "entrypoint": "agent.js"
+}
